@@ -1,0 +1,136 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.icode.eleven'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
+task hello {
+    doLast {
+        println("Hello world!!  eleven")
+    }
+}
+
+task upper {
+    doLast {
+        String someString = "mY_nAmE"
+        println("Original: " + someString)
+        println("Upper case: " + someString.toUpperCase())
+    }
+}
+
+task count {
+    doLast {
+        4.times {
+            print("$it ")
+        }
+    }
+}
+
+// 任务依赖
+task intro(dependsOn: hello) {
+    doLast {
+        println("I'm Gradle")
+    }
+}
+
+// Lazy dependsOn - 其他的任务还没有存在，必须加上单引号
+task taskX(dependsOn: 'taskY') {
+    doLast {
+        println("I'm taskX")
+    }
+}
+task taskY() {
+    doLast {
+        println("I'm taskY")
+    }
+}
+
+// 动态任务
+4.times { counter ->
+    task "task$counter" {
+        doLast {
+            println("I'm task number $counter")
+        }
+    }
+}
+//  加入一个依赖
+task0.dependsOn(task2, task3)
+
+// 短标记法，当成构建脚本的属性来访问一个任务
+hello.doLast {
+    print("Greetings from the $hello.name task.")
+}
+
+task myTask {
+    ext.myProperty = "myValue"
+}
+
+task printTaskProperties {
+    doLast {
+        println(myTask.myProperty)
+    }
+}
+
+defaultTasks('clean2', 'run2')
+
+task clean2 {
+    doLast {
+        println("Default Cleaning!")
+    }
+}
+
+task run2 {
+    doLast {
+        println("Default Running!")
+    }
+}
+task other2 {
+    doLast {
+        println("I'm not a default task!")
+    }
+}
+
+task distribution {
+    doLast {
+        println("We build the zip with version=$version")
+    }
+}
+
+task release(dependsOn: 'distribution') {
+    doLast {
+        println("We release now")
+    }
+}
+
+gradle.taskGraph.whenReady { taskGraph ->
+    if (taskGraph.hasTask(release)) {
+        version = '1.0'
+    } else {
+        version = '1.0-SNAPSHOT'
+        version = '1.0-SNAPSHOT'
+    }
+
+}
+
+sourceCompatibility = 1.5
+version = '1.0'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': version
+    }
+}
