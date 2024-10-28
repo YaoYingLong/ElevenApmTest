@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class JdbcDemoApplication {
     public static void main(String[] args) throws SQLException {
         Connection conn1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_user", "root", "root");
-        conn1.prepareStatement("");
+        conn1.prepareStatement("select * from test").execute();
         System.out.println("Hello world!");
     }
 }
