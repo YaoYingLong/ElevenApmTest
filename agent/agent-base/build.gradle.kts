@@ -30,6 +30,19 @@ tasks {
             attributes.put("Can-Redefine-Classes", "true")
             attributes.put("Can-Retransform-Classes", "true")
         }
+
+        dependsOn(assemble)
     }
+//    jar {
+//        manifest {
+//            attributes.put("Main-Class", "com.icode.eleven.PreAgentMain")
+//            attributes.put("Agent-Class", "com.icode.eleven.PreAgentMain")
+//            attributes.put("Premain-Class", "com.icode.eleven.PreAgentMain")
+//            attributes.put("Can-Redefine-Classes", "true")
+//            attributes.put("Can-Retransform-Classes", "true")
+//        }
+//    }
 }
+
+
 
